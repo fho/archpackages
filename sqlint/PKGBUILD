@@ -1,0 +1,21 @@
+# Maintainer: Fabian Holler
+
+pkgname=sqlint
+pkgver=0.1.10
+pkgrel=1
+pkgdesc="SQLint is a simple command-line linter which reads your SQL files and reports any syntax errors or warnings it finds."
+arch=("any")
+url="https://github.com/purcell/sqlint"
+license=("MIT")
+depends=(ruby ruby-pg-query)
+options=(!emptydirs)
+source=(https://rubygems.org/downloads/$pkgname-$pkgver.gem)
+noextract=("$_pkgname-$pkgver.gem")
+sha256sums=("8c90b9fa00c1dfaa0d1e244fb7dc5c819aa163093e528b5473859c8895c64737")
+
+
+package() {
+	local _gemdir="$(ruby -e"puts Gem.default_dir")"
+	gem install --no-user-install --ignore-dependencies -i "$pkgdir$_gemdir" -n "$pkgdir/usr/bin" "$pkgname-$pkgver.gem"
+	rm "$pkgdir/$_gemdir/cache/$pkgname-$pkgver.gem"
+}
